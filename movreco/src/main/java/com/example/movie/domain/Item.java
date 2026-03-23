@@ -13,4 +13,6 @@ public class Item {
     private String imageUrl;
     private Double rating;
     private String genre;
+    private String director;
+    private String actors;
 }

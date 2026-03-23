@@ -341,6 +341,7 @@ footer {
 .feedback-msg { margin-top: 0.5rem; font-size: 0.875rem; transition: color 0.3s; }
 .text-danger { color: #ef4444; }
 .text-success { color: #10b981; }
+.text-yellow { color: #fbbf24; }
 .badge-book { color: var(--primary) !important; }
 
 /* Component Classes */

@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS bookmark;
+DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS member;
+DROP TABLE IF EXISTS item;
+
 CREATE TABLE IF NOT EXISTS item (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -5,7 +11,9 @@ CREATE TABLE IF NOT EXISTS item (
     type VARCHAR(50),
     image_url VARCHAR(255),
     rating DOUBLE,
-    genre VARCHAR(100)
+    genre VARCHAR(100),
+    director VARCHAR(100),
+    actors VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS member (

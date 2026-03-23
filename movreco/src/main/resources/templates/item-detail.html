@@ -26,8 +26,12 @@
                         </form>
                     </div>
                     <p class="text-muted-mb"><strong>장르:</strong> <span th:text="${item.genre}"></span></p>
-                    <p class="text-muted-mb"><strong>평점:</strong> ★ <span th:text="${item.rating}"></span></p>
-                    <p th:text="${item.description}">Description</p>
+                    <p class="text-muted-mb"><strong>평점:</strong> <span class="text-yellow">★ <span th:text="${item.rating}"></span></span></p>
+                    <p class="text-muted-mb" th:if="${item.director}"><strong><span th:text="${item.type == 'BOOK' ? '저자:' : '감독:'}">감독:</span></strong> <span th:text="${item.director}"></span></p>
+                    <p class="text-muted-mb" th:if="${item.actors != null && item.actors != '-'}"><strong>출연:</strong> <span th:text="${item.actors}"></span></p>
+                    
+                    <h3 style="margin-top:2rem; margin-bottom:0.5rem; border-bottom:1px solid #333; padding-bottom:0.5rem; color:#fff; font-size:1.2rem;">작품 알아보기</h3>
+                    <p th:text="${item.description}" style="line-height:1.8; color:#cbd5e1;">Description</p>
                 </div>
             </section>
 
@@ -42,8 +46,10 @@
                     <div class="review-header flex-between">
                         <div>
                             <span class="text-primary-bold" th:text="${review.nickname}">User</span>
-                            <span>
+                            <span class="text-yellow" style="margin-left: 0.5rem;">
                                 ★ <span th:text="${review.rating}"></span>
+                            </span>
+                            <span style="color:#888; margin-left:0.5rem;">
                                 &bull; <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
                             </span>
                         </div>
