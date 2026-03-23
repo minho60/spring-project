@@ -24,6 +24,13 @@ public class ItemService {
         return itemRepository.findByType(type);
     }
 
+    public List<Item> searchItems(String keyword) {
+        if(keyword == null || keyword.trim().isEmpty()) {
+            return getAllItems();
+        }
+        return itemRepository.searchByKeyword(keyword);
+    }
+
     public Item getItemById(Long id) {
         return itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + id));
     }

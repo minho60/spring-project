@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정 - Movreco</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/post.css}">
+</head>
+<body>
+
+    <nav th:replace="~{layout/header :: header}"></nav>
+
+    <main class="container pt-4">
+        <div class="form-container">
+            <h2 class="form-title mt-0 text-white">게시글 수정하기</h2>
+            <form th:action="@{/board/{id}/edit(id=${post.id})}" method="post">
+                <div class="form-group">
+                    <label class="form-label">제목</label>
+                    <input type="text" name="title" class="form-input" th:value="${post.title}" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">내용</label>
+                    <textarea name="content" class="form-input" th:text="${post.content}" required rows="8"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">수정 완료</button>
+                <a th:href="@{/board/{id}(id=${post.id})}" class="btn-cancel">취소</a>
+            </form>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>

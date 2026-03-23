@@ -1,0 +1,9 @@
+.board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.btn-new-post { background: #6366f1; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; }
+.board-table { width: 100%; border-collapse: collapse; background: var(--card-bg, #1e1e1e); border-radius: 12px; overflow: hidden; }
+.board-table th, .board-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #333; }
+.board-table th { background: #2a2a2a; color: #aaa; }
+.board-table td { color: #ddd; }
+.board-table tr:hover td { background: #222; }
+.board-table a { color: #fff; text-decoration: none; }
+.board-table a:hover { color: #6366f1; }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class PostDto {
     private Long id;
     private String username;
+    private String nickname;
     private String title;
     private String content;
     private Integer viewCount;

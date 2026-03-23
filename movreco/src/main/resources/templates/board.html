@@ -3,69 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Board - Movreco</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <style>
-        .board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .btn-new-post { background: #6366f1; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; }
-        .board-table { width: 100%; border-collapse: collapse; background: var(--card-bg, #1e1e1e); border-radius: 12px; overflow: hidden; }
-        .board-table th, .board-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #333; }
-        .board-table th { background: #2a2a2a; color: #aaa; }
-        .board-table td { color: #ddd; }
-        .board-table tr:hover td { background: #222; }
-        .board-table a { color: #fff; text-decoration: none; }
-        .board-table a:hover { color: #6366f1; }
-    </style>
+    <title>커뮤니티 게시판 - Movreco</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/board.css}">
 </head>
 <body>
 
-    <nav class="navbar" id="main-nav">
-        <a href="/" class="brand-logo">movreco</a>
-        <ul class="nav-links">
-            <li><a href="/">Discover</a></li>
-            <li><a href="/movies">Movies</a></li>
-            <li><a href="/books">Books</a></li>
-            <li><a href="/board" class="active">Board</a></li>
-        </ul>
-        <div class="auth-buttons" style="display:flex; gap:10px;">
-            <a sec:authorize="!isAuthenticated()" href="/login" class="btn-login" id="nav-login-btn">Sign In</a>
-            <a sec:authorize="!isAuthenticated()" href="/signup" class="btn-login" style="background-color: transparent; border: 1px solid #6366f1;">Sign Up</a>
-            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;">
-                <button type="submit" class="btn-login" style="background-color: #ef4444;">Log Out</button>
-            </form>
-        </div>
-    </nav>
+    <nav th:replace="~{layout/header :: header}"></nav>
 
-    <main class="container" style="padding-top: 4rem;">
+    <main class="container pt-4">
         <div class="board-header">
-            <h2 class="section-title">Community Board</h2>
-            <a href="/board/new" class="btn-new-post">✍️ Write a Post</a>
+            <h2 class="section-title">커뮤니티 게시판</h2>
+            <a href="/board/new" class="btn-new-post">✍️ 글쓰기</a>
         </div>
         
         <table class="board-table">
             <thead>
                 <tr>
-                    <th width="10%">ID</th>
-                    <th width="50%">Title</th>
-                    <th width="15%">Author</th>
-                    <th width="15%">Date</th>
-                    <th width="10%">Views</th>
+                    <th width="10%">번호</th>
+                    <th width="50%">제목</th>
+                    <th width="15%">작성자</th>
+                    <th width="15%">작성일</th>
+                    <th width="10%">조회수</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="post : ${posts}">
                     <td th:text="${post.id}">1</td>
-                    <td><a th:href="@{/board/{id}(id=${post.id})}" th:text="${post.title}">Title of the post</a></td>
-                    <td th:text="${post.username}">Author</td>
+                    <td>
+                        <a th:href="@{/board/{id}(id=${post.id})}" th:text="${post.title}" class="board-link">Title</a>
+                    </td>
+                    <td th:text="${post.nickname}">Author</td>
                     <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Date</td>
                     <td th:text="${post.viewCount}">0</td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(posts)}">
-                    <td colspan="5" style="text-align: center; color: #888;">No posts available. Be the first to write one!</td>
+                    <td colspan="5" class="text-muted-center">아직 등록된 게시물이 없습니다. 첫 번째 글을 작성해 보세요!</td>
                 </tr>
             </tbody>
         </table>
     </main>
 
+    <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>
 </html>

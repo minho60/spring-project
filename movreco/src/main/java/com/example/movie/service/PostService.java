@@ -37,21 +37,41 @@ public class PostService {
 
     public void createPost(String username, String title, String content) {
         Optional<Member> memberOpt = memberRepository.findByUsername(username);
-        if (memberOpt.isPresent()) {
+        memberOpt.ifPresent(member -> {
             Post post = new Post();
-            post.setMemberId(memberOpt.get().getId());
+            post.setMemberId(member.getId());
             post.setTitle(title);
             post.setContent(content);
             post.setViewCount(0);
             post.setCreatedAt(LocalDateTime.now());
             postRepository.save(post);
+        });
+    }
+
+    public void updatePost(Long id, String username, String title, String content) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        if (!post.getMemberId().equals(member.getId())) {
+            throw new IllegalStateException("권한이 없습니다.");
         }
+        post.setTitle(title);
+        post.setContent(content);
+        postRepository.save(post);
+    }
+
+    public void deletePost(Long id, String username) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        if (!post.getMemberId().equals(member.getId())) {
+            throw new IllegalStateException("권한이 없습니다.");
+        }
+        postRepository.deleteById(id);
     }
 
     private PostDto convertToDto(Post post) {
-        String username = memberRepository.findById(post.getMemberId())
-                .map(Member::getUsername)
-                .orElse("Unknown User");
-        return new PostDto(post.getId(), username, post.getTitle(), post.getContent(), post.getViewCount(), post.getCreatedAt());
+        Member member = memberRepository.findById(post.getMemberId()).orElse(null);
+        String username = member != null ? member.getUsername() : "Unknown";
+        String nickname = member != null && member.getNickname() != null ? member.getNickname() : username;
+        return new PostDto(post.getId(), username, nickname, post.getTitle(), post.getContent(), post.getViewCount(), post.getCreatedAt());
     }
 }

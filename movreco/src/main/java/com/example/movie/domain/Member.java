@@ -10,5 +10,7 @@ public class Member {
     private String username;
     private String password;
     private String email;
+    private String nickname;
+    private String favoriteGenre;
     private String role;
 }

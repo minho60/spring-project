@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS member (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100),
+    nickname VARCHAR(50),
+    favorite_genre VARCHAR(50),
     role VARCHAR(50) DEFAULT 'ROLE_USER',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -36,4 +38,13 @@ CREATE TABLE IF NOT EXISTS post (
     view_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS bookmark (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    item_id BIGINT NOT NULL,
+    UNIQUE (member_id, item_id),
+    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES item(id) ON DELETE CASCADE
 );

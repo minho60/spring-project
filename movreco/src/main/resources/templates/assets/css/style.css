@@ -316,3 +316,79 @@ footer {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Utility Classes Extracted from Inline Styles */
+.pt-4 { padding-top: 4rem; }
+.mt-0 { margin-top: 0; }
+.text-white { color: #fff; }
+.text-primary-bold { color: var(--primary); font-weight: bold; }
+.text-primary { color: var(--primary); }
+.text-muted-mt { color: var(--text-muted); margin-top: 1rem; }
+.text-muted-mb { color: var(--text-muted); margin-bottom: 1rem; }
+.text-muted-center { text-align: center; color: var(--text-muted); }
+.text-center { text-align: center; }
+.mt-10px { margin-top: 10px; }
+.m-0 { margin: 0; }
+.p-0 { padding: 0; }
+.w-150px { width: 150px; }
+.flex-grow-1 { flex-grow: 1; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.flex-center-gap-10 { display: flex; align-items: center; gap: 10px; }
+.flex-gap-10 { display: flex; gap: 10px; }
+.flex-gap-1rem { display: flex; gap: 1rem; }
+.mb-1-inline { margin-bottom: 1rem; display: inline-block; }
+.nowrap { white-space: nowrap; }
+.feedback-msg { margin-top: 0.5rem; font-size: 0.875rem; transition: color 0.3s; }
+.text-danger { color: #ef4444; }
+.text-success { color: #10b981; }
+.badge-book { color: var(--primary) !important; }
+
+/* Component Classes */
+.btn-cancel { color: #aaa; text-decoration: none; margin-left: 1rem; }
+.btn-outline-primary {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-outline-danger {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+.btn-outline-danger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+.btn-danger-sm {
+  background: #ef4444;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.btn-icon {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+.card-link-wrapper { text-decoration: none; color: inherit; display: block; cursor: pointer; }
+.empty-state-card { text-align: center; margin-top: 4rem; color: var(--text-muted); }
+.auth-prompt-box { margin-top: 2rem; padding: 1rem; background: #2a2a2a; border-radius: 6px; text-align: center; }

@@ -24,7 +24,7 @@ public class PostController {
     }
 
     @GetMapping("/board/{id}")
-    public String postDetail(@PathVariable Long id, Model model) {
+    public String postDetail(@PathVariable("id") Long id, Model model) {
         model.addAttribute("post", postService.getPostById(id));
         return "post-detail";
     }
@@ -35,11 +35,37 @@ public class PostController {
     }
 
     @PostMapping("/board")
-    public String createPost(@RequestParam String title, 
-                             @RequestParam String content, 
+    public String createPost(@RequestParam("title") String title, 
+                             @RequestParam("content") String content, 
                              Principal principal) {
         String username = principal != null ? principal.getName() : "user";
         postService.createPost(username, title, content);
+        return "redirect:/board";
+    }
+
+    @GetMapping("/board/{id}/edit")
+    public String editPostForm(@PathVariable("id") Long id, Model model, Principal principal) {
+        com.example.movie.service.PostDto post = postService.getPostById(id);
+        if (principal == null || !post.getUsername().equals(principal.getName())) {
+            return "redirect:/board/" + id;
+        }
+        model.addAttribute("post", post);
+        return "post-edit";
+    }
+
+    @PostMapping("/board/{id}/edit")
+    public String editPost(@PathVariable("id") Long id, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {
+        if (principal != null) {
+            postService.updatePost(id, principal.getName(), title, content);
+        }
+        return "redirect:/board/" + id;
+    }
+
+    @PostMapping("/board/{id}/delete")
+    public String deletePost(@PathVariable("id") Long id, Principal principal) {
+        if (principal != null) {
+            postService.deletePost(id, principal.getName());
+        }
         return "redirect:/board";
     }
 }

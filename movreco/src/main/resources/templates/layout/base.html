@@ -7,20 +7,12 @@
     <title th:text="${title != null ? title : 'Movreco'}">Movreco</title>
     <meta name="description" content="Discover premium movie and book recommendations tailored just for you.">
     
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 </head>
 <body>
 
     <!-- Header Navigation -->
-    <nav class="navbar" id="main-nav">
-        <a href="/" class="brand-logo">movreco</a>
-        <ul class="nav-links">
-            <li><a href="/" class="active">Discover</a></li>
-            <li><a href="/movies">Movies</a></li>
-            <li><a href="/books">Books</a></li>
-        </ul>
-        <a href="/login" class="btn-login" id="nav-login-btn">Sign In</a>
-    </nav>
+    <nav th:replace="~{layout/header :: header}"></nav>
 
     <!-- Main Content Area -->
     <main class="container" id="main-content">
@@ -30,9 +22,7 @@
     </main>
 
     <!-- Footer -->
-    <footer id="main-footer">
-        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> Movreco Team. Built with Spring Boot & Pure CSS.</p>
-    </footer>
+    <footer th:replace="~{layout/footer :: footer}"></footer>
 
 </body>
 </html>

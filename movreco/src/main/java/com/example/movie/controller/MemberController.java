@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,13 +25,21 @@ public class MemberController {
         return "signup";
     }
 
+    @GetMapping("/api/check-username")
+    @ResponseBody
+    public boolean checkUsername(@RequestParam("username") String username) {
+        return memberService.isUsernameTaken(username);
+    }
+
     @PostMapping("/signup")
-    public String registerUser(@RequestParam String username, 
-                               @RequestParam String password, 
-                               @RequestParam String email, 
+    public String registerUser(@RequestParam("username") String username, 
+                               @RequestParam("password") String password, 
+                               @RequestParam("email") String email, 
+                               @RequestParam("nickname") String nickname,
+                               @RequestParam("favoriteGenre") String favoriteGenre,
                                Model model) {
         try {
-            memberService.registerUser(username, password, email);
+            memberService.registerUser(username, password, email, nickname, favoriteGenre);
             return "redirect:/login?registered=true";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Username already exists.");

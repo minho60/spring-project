@@ -19,12 +19,18 @@ public class MemberService {
             member.setUsername("user");
             member.setPassword(passwordEncoder.encode("1234"));
             member.setEmail("user@example.com");
+            member.setNickname("초기유저");
+            member.setFavoriteGenre("Action");
             member.setRole("ROLE_USER");
             memberRepository.save(member);
         }
     }
 
-    public void registerUser(String username, String rawPassword, String email) {
+    public boolean isUsernameTaken(String username) {
+        return memberRepository.findByUsername(username).isPresent();
+    }
+
+    public void registerUser(String username, String rawPassword, String email, String nickname, String favoriteGenre) {
         if (memberRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
@@ -32,6 +38,8 @@ public class MemberService {
         member.setUsername(username);
         member.setPassword(passwordEncoder.encode(rawPassword));
         member.setEmail(email);
+        member.setNickname(nickname);
+        member.setFavoriteGenre(favoriteGenre);
         member.setRole("ROLE_USER");
         memberRepository.save(member);
     }

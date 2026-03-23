@@ -22,10 +22,10 @@ public class ReviewService {
     public List<ReviewDto> getReviewsByItemId(Long itemId) {
         return reviewRepository.findByItemIdOrderByCreatedAtDesc(itemId).stream()
             .map(review -> {
-                String username = memberRepository.findById(review.getMemberId())
-                                                  .map(Member::getUsername)
-                                                  .orElse("Unknown User");
-                return new ReviewDto(review.getId(), username, review.getContent(), review.getRating(), review.getCreatedAt());
+                Member member = memberRepository.findById(review.getMemberId()).orElse(null);
+                String username = member != null ? member.getUsername() : "Unknown";
+                String nickname = member != null && member.getNickname() != null ? member.getNickname() : username;
+                return new ReviewDto(review.getId(), username, nickname, review.getContent(), review.getRating(), review.getCreatedAt());
             })
             .collect(Collectors.toList());
     }
@@ -41,5 +41,14 @@ public class ReviewService {
             review.setCreatedAt(LocalDateTime.now());
             reviewRepository.save(review);
         }
+    }
+
+    public void deleteReview(Long reviewId, String username) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Invalid review"));
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        if (!review.getMemberId().equals(member.getId())) {
+            throw new IllegalStateException("권한이 없습니다.");
+        }
+        reviewRepository.deleteById(reviewId);
     }
 }
