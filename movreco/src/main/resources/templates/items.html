@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title != null ? title : 'Movreco'}">Items</title>
+    
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar" id="main-nav">
+        <a href="/" class="brand-logo">movreco</a>
+        <ul class="nav-links">
+            <li><a href="/">Discover</a></li>
+			<li>
+			  <a th:href="@{/movies}" 
+			     th:class="${currentPath == '/movies'} ? 'active' : ''">
+			     Movies
+			  </a>
+			</li>
+
+			<li>
+			  <a th:href="@{/books}" 
+			     th:class="${currentPath == '/books'} ? 'active' : ''">
+			     Books
+			  </a>
+			</li>
+            <li><a href="/board">Board</a></li>
+        </ul>
+        <div class="auth-buttons" style="display:flex; gap:10px;">
+            <a sec:authorize="!isAuthenticated()" href="/login" class="btn-login" id="nav-login-btn">Sign In</a>
+            <a sec:authorize="!isAuthenticated()" href="/signup" class="btn-login" style="background-color: transparent; border: 1px solid #6366f1;">Sign Up</a>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;">
+                <button type="submit" class="btn-login" style="background-color: #ef4444;">Log Out</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="container" id="main-content" style="padding-top: 4rem;">
+        <h2 class="section-title" th:text="${pageTitle}">Explore Items</h2>
+        
+        <div class="grid-container" id="items-grid">
+            <article class="card" th:each="item : ${items}">
+                <div class="card-img-wrapper">
+                    <!-- Image Source -->
+                    <img th:src="${item.imageUrl}" th:alt="${item.title}" class="card-img">
+                    <span class="card-badge" th:text="${item.type == 'MOVIE' ? 'Movie' : 'Book'}" th:style="${item.type == 'BOOK' ? 'color:#6366f1;' : ''}">Type</span>
+                </div>
+                <div class="card-content">
+                    <a th:href="@{/items/{id}(id=${item.id})}" style="text-decoration:none; color:inherit;">
+                        <h3 class="card-title" th:text="${item.title}">Item Title</h3>
+                    </a>
+                    <p class="card-desc" th:text="${item.description}">Item Description</p>
+                    <div class="card-meta">
+                        <span class="rating">★ [[${item.rating}]]</span>
+                        <span th:text="${item.genre}">Genre</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(items)}" style="text-align: center; margin-top: 4rem; color: var(--text-muted);">
+            <p>No items found in this section yet. Try refreshing the page!</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> Movreco. Built with pristine Dark Mode UI.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Best Practices -->
+    <title th:text="${title != null ? title : 'Movreco'}">Movreco</title>
+    <meta name="description" content="Discover premium movie and book recommendations tailored just for you.">
+    
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="navbar" id="main-nav">
+        <a href="/" class="brand-logo">movreco</a>
+        <ul class="nav-links">
+            <li><a href="/" class="active">Discover</a></li>
+            <li><a href="/movies">Movies</a></li>
+            <li><a href="/books">Books</a></li>
+        </ul>
+        <a href="/login" class="btn-login" id="nav-login-btn">Sign In</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="container" id="main-content">
+        <div layout:fragment="content" th:remove="tag">
+            <!-- Child pages will render content here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> Movreco Team. Built with Spring Boot & Pure CSS.</p>
+    </footer>
+
+</body>
+</html>
