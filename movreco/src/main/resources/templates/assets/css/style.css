@@ -413,6 +413,11 @@ footer {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
+/* ===== Mobile Menu Wrapper (transparent on desktop) ===== */
+.mobile-menu {
+  display: contents;
+}
+
 /* ===== Hamburger Menu Button ===== */
 .menu-toggle {
   display: none;
@@ -454,9 +459,9 @@ footer {
     display: flex;
   }
 
-  /* Navbar becomes column on mobile */
+  /* Navbar stays fixed height on mobile */
   .navbar {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     padding: 0.75rem 5%;
   }
 
@@ -469,23 +474,35 @@ footer {
     margin-left: auto;
   }
 
-  /* Collapsible sections */
-  .nav-links,
-  .auth-buttons {
+  /* Mobile menu dropdown container */
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
     width: 100%;
-    overflow: hidden;
     max-height: 0;
+    overflow: hidden;
     opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+    background: rgba(15, 23, 42, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
   }
 
+  .navbar.nav-open .mobile-menu {
+    max-height: 400px;
+    opacity: 1;
+  }
+
+  /* Nav links inside mobile menu */
   .nav-links {
-    order: 3;
     flex-direction: column;
     gap: 0;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 5%;
   }
   .nav-links li a {
     display: block;
@@ -496,19 +513,10 @@ footer {
     display: none;
   }
 
+  /* Auth buttons inside mobile menu */
   .auth-buttons {
-    order: 4;
     justify-content: center;
-    padding-bottom: 0;
-  }
-
-  /* Open state */
-  .navbar.nav-open .nav-links,
-  .navbar.nav-open .auth-buttons {
-    max-height: 500px;
-    opacity: 1;
-    margin-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding: 0.75rem 5%;
   }
 
   /* Hero */
