@@ -16,14 +16,22 @@
     gap: 0.75rem;
   }
   .board-table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    table-layout: fixed;
     font-size: 0.85rem;
   }
   .board-table th,
   .board-table td {
     padding: 0.65rem 0.5rem;
+  }
+  /* 제목 열: 어디서든 줄바꿈 */
+  .board-table td:nth-child(2) {
+    word-break: break-all;
+  }
+  /* 나머지 열: 줄바꿈 방지 */
+  .board-table td:nth-child(1),
+  .board-table td:nth-child(3),
+  .board-table td:nth-child(4),
+  .board-table td:nth-child(5) {
     white-space: nowrap;
   }
 }
