@@ -44,7 +44,7 @@
                 
                 <div class="review-card" th:each="review : ${reviews}">
                     <div class="review-rating text-yellow">★ <span th:text="${review.rating}"></span></div>
-                    <div class="review-content" th:text="${review.content}">Review content</div>
+                    <div class="review-content" th:attr="data-full=${review.content}" th:text="${review.content}">Review content</div>
                     <div class="review-footer">
                         <span class="text-primary-bold" th:text="${review.nickname}">User</span>
                         <span style="color:#666;">&bull;</span>
@@ -74,5 +74,29 @@
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
+
+    <script>
+        document.querySelectorAll('.review-content').forEach(function(el) {
+            var full = el.getAttribute('data-full');
+            if (full && full.length > 150) {
+                var truncated = full.substring(0, 150) + '...';
+                el.textContent = truncated;
+                var btn = document.createElement('button');
+                btn.textContent = '더보기';
+                btn.className = 'btn-toggle-review';
+                btn.addEventListener('click', function() {
+                    if (btn.textContent === '더보기') {
+                        el.textContent = full;
+                        btn.textContent = '접기';
+                    } else {
+                        el.textContent = truncated;
+                        btn.textContent = '더보기';
+                    }
+                    el.parentNode.insertBefore(btn, el.nextSibling);
+                });
+                el.parentNode.insertBefore(btn, el.nextSibling);
+            }
+        });
+    </script>
 </body>
 </html>
