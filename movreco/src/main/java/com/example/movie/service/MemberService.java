@@ -48,4 +48,8 @@ public class MemberService {
         member.setRole("ROLE_USER");
         memberRepository.save(member);
     }
+
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
+    }
 }

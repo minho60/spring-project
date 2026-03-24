@@ -68,6 +68,20 @@ public class MemberController {
         return "profile";
     }
 
+    @PostMapping("/profile/delete")
+    public String deleteAccount(Principal principal, jakarta.servlet.http.HttpServletRequest request) {
+        if (principal != null) {
+            Member member = memberService.getMemberByUsername(principal.getName());
+            // 리뷰, 글 삭제 후 회원 삭제
+            reviewRepository.deleteAll(reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+            postRepository.deleteAll(postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+            memberService.deleteMember(member.getId());
+            // 세션 무효화 (로그아웃 처리)
+            request.getSession().invalidate();
+        }
+        return "redirect:/";
+    }
+
     @PostMapping("/signup")
     public String registerUser(@RequestParam("username") String username, 
                                @RequestParam("password") String password, 
