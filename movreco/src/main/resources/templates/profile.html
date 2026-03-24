@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프로필 - Movreco</title>
+    <title>내 정보 - Movreco</title>
     <link rel="stylesheet" th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" th:href="@{/assets/css/auth.css}">
 </head>
@@ -12,36 +12,113 @@
     <nav th:replace="~{layout/header :: header}"></nav>
 
     <main class="container">
-        <div class="auth-container">
-            <h2 class="text-center mb-2rem">내 프로필</h2>
-
-            <div class="profile-info">
-                <div class="profile-info-row">
-                    <span class="profile-label">아이디</span>
-                    <span th:text="${member.username}">user</span>
-                </div>
-                <div class="profile-info-row">
-                    <span class="profile-label">별명 (닉네임)</span>
-                    <span th:text="${member.nickname}">닉네임</span>
-                </div>
-                <div class="profile-info-row">
-                    <span class="profile-label">이메일</span>
-                    <span th:text="${member.email}">email@example.com</span>
-                </div>
-                <div class="profile-info-row">
-                    <span class="profile-label">좋아하는 장르</span>
-                    <span th:text="${T(com.example.movie.domain.Genre).getLabelByValue(member.favoriteGenre)}">장르</span>
-                </div>
+        <h2 id="page-title" style="margin-bottom: 2.25rem;">내 정보</h2>
+        <div class="profile-layout">
+            <!-- 사이드바 메뉴 -->
+            <div class="profile-tab-wrapper">
+                <aside class="profile-sidebar">
+                    <button class="profile-tab active" data-tab="info">내 정보</button>
+                    <button class="profile-tab" data-tab="reviews">내가 작성한 리뷰</button>
+                    <button class="profile-tab" data-tab="posts">내가 작성한 글</button>
+                    <div class="profile-sidebar-divider"></div>
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="profile-tab">로그아웃</button>
+                    </form>
+                </aside>
             </div>
 
-            <div style="margin-top: 2rem; text-align: center;">
-                <form th:action="@{/logout}" method="post" class="m-0">
-                    <button type="submit" class="btn-login btn-danger-header" style="width: 100%; padding: 0.75rem;">로그아웃</button>
-                </form>
+            <!-- 탭 콘텐츠 -->
+            <div class="profile-content">
+                <!-- 내 정보 -->
+                <div class="tab-panel active" id="tab-info">
+                    <div class="profile-section">
+                        <div class="profile-info-row">
+                            <span class="profile-label">아이디</span>
+                            <span th:text="${member.username}">user</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <span class="profile-label">별명 (닉네임)</span>
+                            <span th:text="${member.nickname}">닉네임</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <span class="profile-label">이메일</span>
+                            <span th:text="${member.email}">email@example.com</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <span class="profile-label">좋아하는 장르</span>
+                            <span th:text="${T(com.example.movie.domain.Genre).getLabelByValue(member.favoriteGenre)}">장르</span>
+                        </div>
+                    </div>
+                    <form th:action="@{/profile/delete}" method="post" class="m-0" style="margin-top: 2rem; text-align: right;" onsubmit="return confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');">
+                        <button type="submit" class="btn-text-danger">회원 탈퇴</button>
+                    </form>
+                </div>
+
+                <!-- 내가 작성한 리뷰 -->
+                <div class="tab-panel" id="tab-reviews">
+                    <div th:if="${#lists.isEmpty(reviews)}" class="empty-state">
+                        아직 작성한 리뷰가 없습니다.
+                    </div>
+                    <div th:unless="${#lists.isEmpty(reviews)}" class="profile-list">
+                        <div th:each="review : ${reviews}" class="profile-list-item">
+                            <div class="profile-list-meta">
+                                <span class="text-yellow">★ <span th:text="${review.rating}"></span></span>
+                                <span class="text-muted" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                            </div>
+                            <div class="profile-list-text" th:text="${review.content}">리뷰 내용</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 내가 작성한 글 -->
+                <div class="tab-panel" id="tab-posts">
+                    <div th:if="${#lists.isEmpty(posts)}" class="empty-state">
+                        아직 작성한 글이 없습니다.
+                    </div>
+                    <div th:unless="${#lists.isEmpty(posts)}" class="profile-list">
+                        <a th:each="post : ${posts}" th:href="@{/board/{id}(id=${post.id})}" class="profile-list-item profile-list-link">
+                            <div class="profile-list-title" th:text="${post.title}">글 제목</div>
+                            <div class="profile-list-meta">
+                                <span class="text-muted" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                <span class="text-muted">조회 <span th:text="${post.viewCount}">0</span></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
+
+    <script>
+        var titles = { info: '내 정보', reviews: '내가 작성한 리뷰', posts: '내가 작성한 글' };
+        document.querySelectorAll('.profile-tab[data-tab]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.profile-tab').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                document.getElementById('page-title').textContent = titles[btn.dataset.tab] || '내 정보';
+            });
+        });
+
+        // 탭 스크롤 그라데이션
+        (function() {
+            var sidebar = document.querySelector('.profile-sidebar');
+            var wrapper = document.querySelector('.profile-tab-wrapper');
+            if (!sidebar || !wrapper) return;
+
+            function updateGradients() {
+                var scrollLeft = sidebar.scrollLeft;
+                var maxScroll = sidebar.scrollWidth - sidebar.clientWidth;
+                wrapper.classList.toggle('scroll-left', scrollLeft > 2);
+                wrapper.classList.toggle('scroll-right', scrollLeft < maxScroll - 2);
+            }
+            sidebar.addEventListener('scroll', updateGradients);
+            window.addEventListener('resize', updateGradients);
+            updateGradients();
+        })();
+    </script>
 </body>
 </html>

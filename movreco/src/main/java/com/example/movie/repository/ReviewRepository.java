@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
     List<Review> findByItemIdOrderByCreatedAtDesc(Long itemId);
+    List<Review> findByMemberIdOrderByCreatedAtDesc(Long memberId);
 }

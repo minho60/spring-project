@@ -1,5 +1,8 @@
 package com.example.movie.controller;
 
+import com.example.movie.domain.Member;
+import com.example.movie.repository.PostRepository;
+import com.example.movie.repository.ReviewRepository;
 import com.example.movie.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import java.security.Principal;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ReviewRepository reviewRepository;
+    private final PostRepository postRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -38,7 +43,10 @@ public class MemberController {
         if (principal == null) {
             return "redirect:/login";
         }
-        model.addAttribute("member", memberService.getMemberByUsername(principal.getName()));
+        Member member = memberService.getMemberByUsername(principal.getName());
+        model.addAttribute("member", member);
+        model.addAttribute("reviews", reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+        model.addAttribute("posts", postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
         return "profile";
     }
 
