@@ -61,6 +61,12 @@
                     </div>
                     <div th:unless="${#lists.isEmpty(reviews)}" class="profile-list">
                         <div th:each="review : ${reviews}" class="profile-list-item">
+                            <div class="profile-list-header">
+                                <a th:href="@{/items/{id}(id=${review.itemId})}" class="profile-list-title-link" th:text="${itemNames[review.itemId]}">아이템 이름</a>
+                                <form th:action="@{/items/{itemId}/reviews/{reviewId}/delete(itemId=${review.itemId}, reviewId=${review.id})}" method="post" class="m-0" onsubmit="return confirm('이 리뷰를 삭제하시겠습니까?');">
+                                    <button type="submit" class="btn-text-danger">삭제</button>
+                                </form>
+                            </div>
                             <div class="profile-list-meta">
                                 <span class="text-yellow">★ <span th:text="${review.rating}"></span></span>
                                 <span class="text-muted" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
@@ -76,13 +82,18 @@
                         아직 작성한 글이 없습니다.
                     </div>
                     <div th:unless="${#lists.isEmpty(posts)}" class="profile-list">
-                        <a th:each="post : ${posts}" th:href="@{/board/{id}(id=${post.id})}" class="profile-list-item profile-list-link">
-                            <div class="profile-list-title" th:text="${post.title}">글 제목</div>
+                        <div th:each="post : ${posts}" class="profile-list-item">
+                            <div class="profile-list-header">
+                                <a th:href="@{/board/{id}(id=${post.id})}" class="profile-list-title-link" th:text="${post.title}">글 제목</a>
+                                <form th:action="@{/board/{id}/delete(id=${post.id})}" method="post" class="m-0" onsubmit="return confirm('이 글을 삭제하시겠습니까?');">
+                                    <button type="submit" class="btn-text-danger">삭제</button>
+                                </form>
+                            </div>
                             <div class="profile-list-meta">
                                 <span class="text-muted" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                                 <span class="text-muted">조회 <span th:text="${post.viewCount}">0</span></span>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,8 @@
 package com.example.movie.controller;
 
 import com.example.movie.domain.Member;
+import com.example.movie.domain.Review;
+import com.example.movie.repository.ItemRepository;
 import com.example.movie.repository.PostRepository;
 import com.example.movie.repository.ReviewRepository;
 import com.example.movie.service.MemberService;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ public class MemberController {
     private final MemberService memberService;
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
+    private final ItemRepository itemRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -44,8 +50,20 @@ public class MemberController {
             return "redirect:/login";
         }
         Member member = memberService.getMemberByUsername(principal.getName());
+        List<Review> reviews = reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
+
+        // 리뷰에 연결된 아이템 이름 맵
+        Map<Long, String> itemNames = new HashMap<>();
+        for (Review review : reviews) {
+            if (!itemNames.containsKey(review.getItemId())) {
+                itemRepository.findById(review.getItemId())
+                    .ifPresent(item -> itemNames.put(item.getId(), item.getTitle()));
+            }
+        }
+
         model.addAttribute("member", member);
-        model.addAttribute("reviews", reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("itemNames", itemNames);
         model.addAttribute("posts", postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
         return "profile";
     }

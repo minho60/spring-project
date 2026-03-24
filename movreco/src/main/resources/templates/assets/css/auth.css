@@ -182,6 +182,22 @@
   margin-bottom: 0.35rem;
   word-break: break-all;
 }
+.profile-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+.profile-list-title-link {
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 1rem;
+  word-break: break-all;
+}
+.profile-list-title-link:hover {
+  color: #818cf8;
+}
 .profile-list-text {
   color: #aaa;
   font-size: 0.9rem;
