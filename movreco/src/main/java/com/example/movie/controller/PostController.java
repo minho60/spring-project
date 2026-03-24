@@ -16,6 +16,7 @@ import java.security.Principal;
 public class PostController {
 
     private final PostService postService;
+    private final com.example.movie.service.CommentService commentService;
 
     @GetMapping("/board")
     public String board(Model model) {
@@ -26,6 +27,7 @@ public class PostController {
     @GetMapping("/board/{id}")
     public String postDetail(@PathVariable("id") Long id, Model model) {
         model.addAttribute("post", postService.getPostById(id));
+        model.addAttribute("comments", commentService.getCommentsByPostId(id));
         return "post-detail";
     }
 
