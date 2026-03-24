@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필 - Movreco</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/auth.css}">
+</head>
+<body>
+
+    <nav th:replace="~{layout/header :: header}"></nav>
+
+    <main class="container">
+        <div class="auth-container">
+            <h2 class="text-center mb-2rem">내 프로필</h2>
+
+            <div class="profile-info">
+                <div class="profile-info-row">
+                    <span class="profile-label">아이디</span>
+                    <span th:text="${member.username}">user</span>
+                </div>
+                <div class="profile-info-row">
+                    <span class="profile-label">별명 (닉네임)</span>
+                    <span th:text="${member.nickname}">닉네임</span>
+                </div>
+                <div class="profile-info-row">
+                    <span class="profile-label">이메일</span>
+                    <span th:text="${member.email}">email@example.com</span>
+                </div>
+                <div class="profile-info-row">
+                    <span class="profile-label">좋아하는 장르</span>
+                    <span th:text="${member.favoriteGenre}">Action</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn-login btn-danger-header" style="width: 100%; padding: 0.75rem;">로그아웃</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>

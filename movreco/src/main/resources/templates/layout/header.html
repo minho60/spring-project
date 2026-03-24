@@ -14,13 +14,32 @@
                 <li><a href="/movies">영화</a></li>
                 <li><a href="/books">도서</a></li>
                 <li><a href="/board">게시판</a></li>
+                <!-- 모바일 전용: 인증 메뉴를 일반 메뉴 항목으로 표시 -->
+                <li sec:authorize="!isAuthenticated()" class="mobile-only"><a href="/login">로그인</a></li>
+                <li sec:authorize="!isAuthenticated()" class="mobile-only"><a href="/signup">회원가입</a></li>
+                <li sec:authorize="isAuthenticated()" class="mobile-only"><a href="/profile">👤 <span sec:authentication="name">user</span></a></li>
+                <li sec:authorize="isAuthenticated()" class="mobile-only">
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="nav-logout-btn">로그아웃</button>
+                    </form>
+                </li>
             </ul>
-            <div class="auth-buttons flex-gap-10">
+            <!-- 데스크톱 전용: 버튼 스타일 -->
+            <div class="auth-buttons flex-gap-10 desktop-only">
                 <a sec:authorize="!isAuthenticated()" href="/login" class="btn-login" id="nav-login-btn">로그인</a>
                 <a sec:authorize="!isAuthenticated()" href="/signup" class="btn-login btn-outline-primary-header">회원가입</a>
-                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="m-0">
-                    <button type="submit" class="btn-login btn-danger-header">로그아웃</button>
-                </form>
+                <div sec:authorize="isAuthenticated()" class="profile-dropdown" id="profile-dropdown">
+                    <button class="profile-btn" id="profile-btn">
+                        <span class="profile-icon">👤</span>
+                        <span sec:authentication="name">user</span>
+                    </button>
+                    <div class="profile-menu" id="profile-menu">
+                        <a href="/profile" class="profile-menu-item">프로필</a>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="profile-menu-item profile-menu-logout">로그아웃</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <script>
@@ -37,6 +56,18 @@
                             nav.classList.remove('nav-open');
                             btn.classList.remove('active');
                         }
+                    });
+                }
+                // Profile dropdown toggle
+                var profileBtn = document.getElementById('profile-btn');
+                var profileMenu = document.getElementById('profile-menu');
+                if (profileBtn && profileMenu) {
+                    profileBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        profileMenu.classList.toggle('show');
+                    });
+                    document.addEventListener('click', function() {
+                        profileMenu.classList.remove('show');
                     });
                 }
             })();

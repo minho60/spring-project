@@ -34,6 +34,27 @@
 .error-msg { color: #ef4444; margin-bottom: 1rem; text-align: center; background: #fee2e2; padding: 0.5rem; border-radius: 4px; }
 .success-msg { color: #10b981; margin-bottom: 1rem; text-align: center; background: #d1fae5; padding: 0.5rem; border-radius: 4px; }
 
+/* Profile Info */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+.profile-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
+  color: #ddd;
+}
+.profile-info-row:last-child {
+  border-bottom: none;
+}
+.profile-label {
+  color: #888;
+  font-size: 0.9rem;
+}
+
 /* Mobile responsive */
 @media (max-width: 480px) {
   .auth-container {

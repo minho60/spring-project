@@ -413,9 +413,102 @@ footer {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
+/* ===== Profile Dropdown ===== */
+.profile-dropdown {
+  position: relative;
+}
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #e2e8f0;
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.profile-btn:hover {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.5);
+}
+.profile-icon {
+  font-size: 1rem;
+}
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 150px;
+  background: rgba(15, 23, 42, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 200;
+}
+.profile-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.profile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.profile-menu-item:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+.profile-menu-logout {
+  color: #f87171;
+  border-top: 1px solid var(--border-color);
+}
+.profile-menu-logout:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Nav logout button (mobile menu item style) */
+.nav-logout-btn {
+  background: none;
+  border: none;
+  color: #f87171;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+.nav-logout-btn:hover {
+  color: #ef4444;
+}
+
 /* ===== Mobile Menu Wrapper (transparent on desktop) ===== */
 .mobile-menu {
   display: contents;
+}
+
+/* ===== Responsive Visibility ===== */
+.mobile-only {
+  display: none !important;
+}
+.desktop-only {
+  display: flex;
 }
 
 /* ===== Hamburger Menu Button ===== */
@@ -457,6 +550,14 @@ footer {
   /* Hamburger visible */
   .menu-toggle {
     display: flex;
+  }
+
+  /* Swap desktop/mobile visibility */
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: block !important;
   }
 
   /* Navbar stays fixed height on mobile */
@@ -504,7 +605,8 @@ footer {
     gap: 0;
     padding: 0.5rem 5%;
   }
-  .nav-links li a {
+  .nav-links li a,
+  .nav-links li .nav-logout-btn {
     display: block;
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--border-color);
