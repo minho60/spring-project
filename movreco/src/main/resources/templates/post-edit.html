@@ -17,7 +17,7 @@
             <form th:action="@{/board/{id}/edit(id=${post.id})}" method="post">
                 <div class="form-group">
                     <label class="form-label">제목</label>
-                    <input type="text" name="title" class="form-input" maxlength="255" th:value="${post.title}" required autofocus>
+                    <input type="text" name="title" class="form-input" maxlength="100" th:value="${post.title}" required autofocus>
                 </div>
                 <div class="form-group">
                     <label class="form-label">내용</label>
