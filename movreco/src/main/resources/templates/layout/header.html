@@ -17,7 +17,7 @@
                 <!-- 모바일 전용: 인증 메뉴를 일반 메뉴 항목으로 표시 -->
                 <li sec:authorize="!isAuthenticated()" class="mobile-only"><a href="/login">로그인</a></li>
                 <li sec:authorize="!isAuthenticated()" class="mobile-only"><a href="/signup">회원가입</a></li>
-                <li sec:authorize="isAuthenticated()" class="mobile-only"><a href="/profile">👤 <span sec:authentication="name">user</span></a></li>
+                <li sec:authorize="isAuthenticated()" class="mobile-only"><a href="/profile"><svg class="profile-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg> <span sec:authentication="name">user</span></a></li>
                 <li sec:authorize="isAuthenticated()" class="mobile-only">
                     <form th:action="@{/logout}" method="post" class="m-0">
                         <button type="submit" class="nav-logout-btn">로그아웃</button>
@@ -30,7 +30,7 @@
                 <a sec:authorize="!isAuthenticated()" href="/signup" class="btn-login btn-outline-primary-header">회원가입</a>
                 <div sec:authorize="isAuthenticated()" class="profile-dropdown" id="profile-dropdown">
                     <button class="profile-btn" id="profile-btn">
-                        <span class="profile-icon">👤</span>
+                        <span class="profile-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></span>
                         <span sec:authentication="name">user</span>
                     </button>
                     <div class="profile-menu" id="profile-menu">

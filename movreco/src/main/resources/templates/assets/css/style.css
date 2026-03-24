@@ -436,6 +436,12 @@ footer {
 }
 .profile-icon {
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+.profile-svg {
+  vertical-align: middle;
+  margin-right: 0.2rem;
 }
 .profile-menu {
   position: absolute;
