@@ -39,6 +39,9 @@ public class PostController {
                              @RequestParam("content") String content, 
                              Principal principal) {
         String username = principal != null ? principal.getName() : "user";
+        if (title.length() > 255) {
+            title = title.substring(0, 255);
+        }
         postService.createPost(username, title, content);
         return "redirect:/board";
     }
@@ -56,6 +59,9 @@ public class PostController {
     @PostMapping("/board/{id}/edit")
     public String editPost(@PathVariable("id") Long id, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {
         if (principal != null) {
+            if (title.length() > 255) {
+                title = title.substring(0, 255);
+            }
             postService.updatePost(id, principal.getName(), title, content);
         }
         return "redirect:/board/" + id;
