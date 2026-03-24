@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -29,6 +31,15 @@ public class MemberController {
     @ResponseBody
     public boolean checkUsername(@RequestParam("username") String username) {
         return memberService.isUsernameTaken(username);
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", memberService.getMemberByUsername(principal.getName()));
+        return "profile";
     }
 
     @PostMapping("/signup")

@@ -30,6 +30,11 @@ public class MemberService {
         return memberRepository.findByUsername(username).isPresent();
     }
 
+    public Member getMemberByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
     public void registerUser(String username, String rawPassword, String email, String nickname, String favoriteGenre) {
         if (memberRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
