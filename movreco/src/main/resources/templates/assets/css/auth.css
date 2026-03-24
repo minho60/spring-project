@@ -33,3 +33,17 @@
 .auth-footer a { color: #6366f1; text-decoration: none; }
 .error-msg { color: #ef4444; margin-bottom: 1rem; text-align: center; background: #fee2e2; padding: 0.5rem; border-radius: 4px; }
 .success-msg { color: #10b981; margin-bottom: 1rem; text-align: center; background: #d1fae5; padding: 0.5rem; border-radius: 4px; }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+  .auth-title {
+    font-size: 1.3rem;
+  }
+  .form-input {
+    font-size: 0.9rem;
+  }
+}

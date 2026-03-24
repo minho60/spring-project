@@ -3,6 +3,11 @@
 <body>
     <nav class="navbar" id="main-nav" th:fragment="header">
         <a href="/" class="brand-logo">movreco</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기/닫기">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <ul class="nav-links">
             <li><a href="/">둘러보기</a></li>
             <li><a href="/movies">영화</a></li>
@@ -16,6 +21,25 @@
                 <button type="submit" class="btn-login btn-danger-header">로그아웃</button>
             </form>
         </div>
+        <script>
+            (function() {
+                var btn = document.getElementById('menu-toggle');
+                var nav = document.getElementById('main-nav');
+                if (btn && nav) {
+                    btn.addEventListener('click', function() {
+                        nav.classList.toggle('nav-open');
+                        btn.classList.toggle('active');
+                    });
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768) {
+                            nav.classList.remove('nav-open');
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            })();
+        </script>
     </nav>
 </body>
 </html>
+
