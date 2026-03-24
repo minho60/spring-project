@@ -30,7 +30,7 @@
                 </div>
                 <div class="profile-info-row">
                     <span class="profile-label">좋아하는 장르</span>
-                    <span th:text="${member.favoriteGenre}">Action</span>
+                    <span th:text="${T(com.example.movie.domain.Genre).getLabelByValue(member.favoriteGenre)}">장르</span>
                 </div>
             </div>
 

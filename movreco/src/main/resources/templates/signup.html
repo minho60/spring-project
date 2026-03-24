@@ -41,15 +41,7 @@
                     <label for="favoriteGenre" class="form-label">가장 좋아하는 장르</label>
                     <select id="favoriteGenre" name="favoriteGenre" class="form-input" style="appearance: auto; padding: 0.8rem 1.2rem; cursor:pointer;" required>
                         <option value="">-- 좋아하는 장르를 하나 선택해 주세요 --</option>
-                        <option value="Action">🧨 액션 / 스릴러</option>
-                        <option value="Sci-Fi">🚀 SF / 우주</option>
-                        <option value="Romance">💖 로맨스 / 멜로</option>
-                        <option value="Fantasy">🧙‍♂️ 판타지 / 마법</option>
-                        <option value="Comedy">😂 코미디 / 예능</option>
-                        <option value="Drama">🎭 드라마</option>
-                        <option value="Animation">🎨 애니메이션</option>
-                        <option value="Horror">👻 공포 / 호러</option>
-                        <option value="Documentary">🎥 다큐멘터리</option>
+                        <option th:each="genre : ${genres}" th:value="${genre.value}" th:text="${genre.label}"></option>
                     </select>
                 </div>
                 <div class="form-group">
