@@ -1,4 +1,4 @@
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
     const btnCheck = document.getElementById('btn-check-username');
     const inputUsername = document.getElementById('username');
     const msgDiv = document.getElementById('username-msg');
@@ -50,4 +50,4 @@
             }
         });
     }
-})();
+});

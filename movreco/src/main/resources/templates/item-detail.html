@@ -20,18 +20,23 @@
                     <div class="flex-center-gap-10 text-muted-mb">
                         <h2 th:text="${item.title}" class="m-0">작품 제목</h2>
                         <form sec:authorize="isAuthenticated()" th:action="@{/items/{id}/bookmark(id=${item.id})}" method="post" class="m-0">
-                            <button type="submit" class="btn-icon" title="찜하기" th:styleappend="${isBookmarked ? 'color:#ef4444;' : 'color:#555;'}">
+                            <button type="submit" class="btn-bookmark" th:classappend="${isBookmarked ? 'active' : ''}" title="찜하기">
                                 <span th:text="${isBookmarked ? '♥' : '♡'}"></span>
                             </button>
                         </form>
+                        <div sec:authorize="!isAuthenticated()" class="m-0">
+                            <button type="button" id="btn-bookmark-guest" class="btn-bookmark" title="찜하기">
+                                <span>♡</span>
+                            </button>
+                        </div>
                     </div>
                     <p class="text-muted-mb"><strong>장르:</strong> <span th:text="${item.genre}"></span></p>
                     <p class="text-muted-mb"><strong>평점:</strong> <span class="text-yellow">★ <span th:text="${item.rating}"></span></span></p>
                     <p class="text-muted-mb" th:if="${item.director}"><strong><span th:text="${item.type == 'BOOK' ? '저자:' : '감독:'}">감독:</span></strong> <span th:text="${item.director}"></span></p>
                     <p class="text-muted-mb" th:if="${item.actors != null && item.actors != '-'}"><strong>출연:</strong> <span th:text="${item.actors}"></span></p>
                     
-                    <h3 style="margin-top:2rem; margin-bottom:0.5rem; border-bottom:1px solid #333; padding-bottom:0.5rem; color:#fff; font-size:1.2rem;">작품 알아보기</h3>
-                    <p th:text="${item.description}" style="line-height:1.8; color:#cbd5e1;">Description</p>
+                    <h3 class="item-description-title">작품 알아보기</h3>
+                    <p th:text="${item.description}" class="item-description-text">Description</p>
                 </div>
             </section>
 
@@ -47,9 +52,9 @@
                     <div class="review-content" th:attr="data-full=${review.content}" th:text="${review.content}">Review content</div>
                     <div class="review-footer">
                         <span class="text-primary-bold" th:text="${review.nickname}">User</span>
-                        <span style="color:#666;">&bull;</span>
-                        <span style="color:#888;" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
-                        <form sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.username}" th:action="@{/items/{itemId}/reviews/{reviewId}/delete(itemId=${item.id}, reviewId=${review.id})}" method="post" class="m-0" style="display:inline;" onsubmit="return confirm('이 리뷰를 정말 삭제하시겠습니까?');">
+                        <span class="review-meta-dot">&bull;</span>
+                        <span class="review-meta-date" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+                        <form sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.username}" th:action="@{/items/{itemId}/reviews/{reviewId}/delete(itemId=${item.id}, reviewId=${review.id})}" method="post" class="m-0 inline-form" onsubmit="return confirm('이 리뷰를 정말 삭제하시겠습니까?');">
                             <button type="submit" class="btn-outline-danger">삭제</button>
                         </form>
                     </div>

@@ -24,6 +24,60 @@
 }
 .btn-toggle-review:hover { color: #aaa; }
 
+.item-description-title {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.item-description-text {
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+
+.review-meta-dot {
+    color: #666;
+}
+
+.review-meta-date {
+    color: #888;
+}
+
+.btn-bookmark {
+    background: transparent;
+    border: none;
+    color: #64748b; /* 조금 더 밝은 회색 */
+    font-size: 2rem; /* 하트 크기 키움 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0;
+    margin-left: 0.5rem;
+}
+
+.btn-bookmark:hover {
+    transform: scale(1.2);
+    color: #cbd5e1;
+}
+
+.btn-bookmark.active {
+    color: #f43f5e;
+    filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.4)); /* 선명하고 입체적인 광채 효과 */
+}
+
+.btn-bookmark.active:hover {
+    filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.6));
+}
+
+.inline-form {
+    display: inline;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .item-info {

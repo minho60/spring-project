@@ -12,7 +12,7 @@
     <nav th:replace="~{layout/header :: header}"></nav>
 
     <main class="container">
-        <h2 id="page-title" style="margin-bottom: 2.25rem;">내 정보</h2>
+        <h2 id="page-title" class="profile-title">내 정보</h2>
         <div class="profile-layout">
             <!-- 사이드바 메뉴 -->
             <div class="profile-tab-wrapper">
@@ -50,7 +50,7 @@
                             <span th:text="${T(com.example.movie.domain.Genre).getLabelByValue(member.favoriteGenre)}">장르</span>
                         </div>
                     </div>
-                    <form th:action="@{/profile/delete}" method="post" class="m-0" style="margin-top: 2rem; text-align: right;" onsubmit="return confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');">
+                    <form th:action="@{/profile/delete}" method="post" class="m-0 profile-delete-form" onsubmit="return confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');">
                         <button type="submit" class="btn-text-danger">회원 탈퇴</button>
                     </form>
                 </div>

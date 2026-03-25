@@ -45,7 +45,10 @@ public class PostController {
     public String createPost(@RequestParam("title") String title, 
                              @RequestParam("content") String content, 
                              Principal principal) {
-        String username = principal != null ? principal.getName() : "user";
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        String username = principal.getName();
         if (title.length() > 100) {
             title = title.substring(0, 100);
         }

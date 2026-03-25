@@ -14,8 +14,11 @@
     <main class="container pt-4">
         <div class="board-header">
             <h2 class="section-title">커뮤니티 게시판</h2>
-            <a href="/board/new" class="btn-new-post">✍️ 글쓰기</a>
+            <a sec:authorize="isAuthenticated()" href="/board/new" class="btn-new-post">✍️ 글쓰기</a>
+            <a sec:authorize="!isAuthenticated()" href="/login" id="btn-new-post-guest" class="btn-new-post">✍️ 글쓰기</a>
         </div>
+        
+        <script th:src="@{/assets/js/board.js}"></script>
         
         <table class="board-table">
             <thead>

@@ -1,7 +1,7 @@
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
-    var btn = document.getElementById('menu-toggle');
-    var nav = document.getElementById('main-nav');
+    const btn = document.getElementById('menu-toggle');
+    const nav = document.getElementById('main-nav');
     if (btn && nav) {
         btn.addEventListener('click', function() {
             nav.classList.toggle('nav-open');
@@ -16,8 +16,8 @@
     }
 
     // Profile dropdown toggle
-    var profileBtn = document.getElementById('profile-btn');
-    var profileMenu = document.getElementById('profile-menu');
+    const profileBtn = document.getElementById('profile-btn');
+    const profileMenu = document.getElementById('profile-menu');
     if (profileBtn && profileMenu) {
         profileBtn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -34,4 +34,4 @@
             window.location.reload();
         }
     });
-})();
+});
