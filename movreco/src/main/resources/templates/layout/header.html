@@ -42,36 +42,7 @@
                 </div>
             </div>
         </div>
-        <script>
-            (function() {
-                var btn = document.getElementById('menu-toggle');
-                var nav = document.getElementById('main-nav');
-                if (btn && nav) {
-                    btn.addEventListener('click', function() {
-                        nav.classList.toggle('nav-open');
-                        btn.classList.toggle('active');
-                    });
-                    window.addEventListener('resize', function() {
-                        if (window.innerWidth > 768) {
-                            nav.classList.remove('nav-open');
-                            btn.classList.remove('active');
-                        }
-                    });
-                }
-                // Profile dropdown toggle
-                var profileBtn = document.getElementById('profile-btn');
-                var profileMenu = document.getElementById('profile-menu');
-                if (profileBtn && profileMenu) {
-                    profileBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        profileMenu.classList.toggle('show');
-                    });
-                    document.addEventListener('click', function() {
-                        profileMenu.classList.remove('show');
-                    });
-                }
-            })();
-        </script>
+        <script th:src="@{/assets/js/common.js}"></script>
     </nav>
 </body>
 </html>

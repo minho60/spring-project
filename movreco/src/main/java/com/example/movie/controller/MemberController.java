@@ -47,32 +47,37 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, Principal principal) {
+    public String profile(Model model, Principal principal, jakarta.servlet.http.HttpServletResponse response) {
         if (principal == null) {
             return "redirect:/login";
         }
-        Member member = memberService.getMemberByUsername(principal.getName());
-        List<Review> reviews = reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
+        try {
+            Member member = memberService.getMemberByUsername(principal.getName());
+            List<Review> reviews = reviewRepository.findByMemberIdOrderByCreatedAtDesc(member.getId());
 
-        // 리뷰에 연결된 아이템 이름 맵
-        Map<Long, String> itemNames = new HashMap<>();
-        for (Review review : reviews) {
-            if (!itemNames.containsKey(review.getItemId())) {
-                itemRepository.findById(review.getItemId())
-                    .ifPresent(item -> itemNames.put(item.getId(), item.getTitle()));
+            // 리뷰에 연결된 아이템 이름 맵
+            Map<Long, String> itemNames = new HashMap<>();
+            for (Review review : reviews) {
+                if (!itemNames.containsKey(review.getItemId())) {
+                    itemRepository.findById(review.getItemId())
+                        .ifPresent(item -> itemNames.put(item.getId(), item.getTitle()));
+                }
             }
-        }
 
-        model.addAttribute("member", member);
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("itemNames", itemNames);
-        model.addAttribute("posts", postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
-        
-        // 북마크한 아이템 추가
-        List<Long> bookmarkedIds = bookmarkService.getBookmarkedItemIds(principal.getName());
-        model.addAttribute("bookmarkedItems", itemRepository.findAllById(bookmarkedIds));
-        
-        return "profile";
+            model.addAttribute("member", member);
+            model.addAttribute("reviews", reviews);
+            model.addAttribute("itemNames", itemNames);
+            model.addAttribute("posts", postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+            
+            // 북마크한 아이템 추가
+            List<Long> bookmarkedIds = bookmarkService.getBookmarkedItemIds(principal.getName());
+            model.addAttribute("bookmarkedItems", itemRepository.findAllById(bookmarkedIds));
+            
+            return "profile";
+        } catch (IllegalArgumentException e) {
+            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+            return "error/404";
+        }
     }
 
     @PostMapping("/profile/delete")
@@ -87,6 +92,12 @@ public class MemberController {
             request.getSession().invalidate();
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/profile/delete")
+    public String deleteAccountGet(jakarta.servlet.http.HttpServletResponse response) {
+        response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+        return "error/404";
     }
 
     @PostMapping("/signup")

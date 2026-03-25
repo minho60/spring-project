@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지를 찾을 수 없습니다 - Movreco</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/error.css}">
+</head>
+<body>
+
+    <nav th:replace="~{layout/header :: header}"></nav>
+
+    <main class="container">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">앗! 길을 잃으셨나요?</h2>
+            <p class="error-message">
+                요청하신 페이지가 삭제되었거나, 주소가 올바르지 않습니다.<br>
+                아래 버튼을 눌러 홈으로 돌아가실 수 있어요.
+            </p>
+            <a href="/" class="btn-home">홈으로 돌아가기</a>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+
+</body>
+</html>

@@ -50,12 +50,17 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public String itemDetail(@PathVariable("id") Long id, Model model, Principal principal) {
-        model.addAttribute("item", itemService.getItemById(id));
-        model.addAttribute("reviews", reviewService.getReviewsByItemId(id));
-        boolean isBookmarked = principal != null && bookmarkService.isBookmarked(principal.getName(), id);
-        model.addAttribute("isBookmarked", isBookmarked);
-        return "item-detail";
+    public String itemDetail(@PathVariable("id") Long id, Model model, Principal principal, jakarta.servlet.http.HttpServletResponse response) {
+        try {
+            model.addAttribute("item", itemService.getItemById(id));
+            model.addAttribute("reviews", reviewService.getReviewsByItemId(id));
+            boolean isBookmarked = principal != null && bookmarkService.isBookmarked(principal.getName(), id);
+            model.addAttribute("isBookmarked", isBookmarked);
+            return "item-detail";
+        } catch (IllegalArgumentException e) {
+            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+            return "error/404";
+        }
     }
 
     @PostMapping("/items/{id}/bookmark")
@@ -82,5 +87,11 @@ public class ItemController {
             reviewService.deleteReview(reviewId, principal.getName());
         }
         return "redirect:/items/" + itemId;
+    }
+
+    @GetMapping({"/items/{id}/bookmark", "/items/{itemId}/reviews/{reviewId}/delete"})
+    public String handleGetDelete(jakarta.servlet.http.HttpServletResponse response) {
+        response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+        return "error/404";
     }
 }

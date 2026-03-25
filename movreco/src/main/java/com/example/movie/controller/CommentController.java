@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,5 +34,11 @@ public class CommentController {
             commentService.deleteComment(commentId, principal.getName());
         }
         return "redirect:/board/" + postId;
+    }
+
+    @GetMapping({"/board/{postId}/comment", "/board/{postId}/comment/{commentId}/delete"})
+    public String handleGet(jakarta.servlet.http.HttpServletResponse response) {
+        response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+        return "error/404";
     }
 }

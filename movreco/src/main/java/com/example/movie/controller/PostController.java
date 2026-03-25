@@ -25,10 +25,15 @@ public class PostController {
     }
 
     @GetMapping("/board/{id}")
-    public String postDetail(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("post", postService.getPostById(id));
-        model.addAttribute("comments", commentService.getCommentsByPostId(id));
-        return "post-detail";
+    public String postDetail(@PathVariable("id") Long id, Model model, jakarta.servlet.http.HttpServletResponse response) {
+        try {
+            model.addAttribute("post", postService.getPostById(id));
+            model.addAttribute("comments", commentService.getCommentsByPostId(id));
+            return "post-detail";
+        } catch (IllegalArgumentException e) {
+            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+            return "error/404";
+        }
     }
 
     @GetMapping("/board/new")
@@ -49,13 +54,18 @@ public class PostController {
     }
 
     @GetMapping("/board/{id}/edit")
-    public String editPostForm(@PathVariable("id") Long id, Model model, Principal principal) {
-        com.example.movie.service.PostDto post = postService.getPostById(id);
-        if (principal == null || !post.getUsername().equals(principal.getName())) {
-            return "redirect:/board/" + id;
+    public String editPostForm(@PathVariable("id") Long id, Model model, Principal principal, jakarta.servlet.http.HttpServletResponse response) {
+        try {
+            com.example.movie.service.PostDto post = postService.getPostById(id);
+            if (principal == null || !post.getUsername().equals(principal.getName())) {
+                return "redirect:/board/" + id;
+            }
+            model.addAttribute("post", post);
+            return "post-edit";
+        } catch (IllegalArgumentException e) {
+            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+            return "error/404";
         }
-        model.addAttribute("post", post);
-        return "post-edit";
     }
 
     @PostMapping("/board/{id}/edit")
@@ -75,5 +85,11 @@ public class PostController {
             postService.deletePost(id, principal.getName());
         }
         return "redirect:/board";
+    }
+
+    @GetMapping("/board/{id}/delete")
+    public String deletePostGet(jakarta.servlet.http.HttpServletResponse response) {
+        response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND);
+        return "error/404";
     }
 }
