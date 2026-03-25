@@ -6,6 +6,7 @@
     <title th:text="${post.title} + ' - Movreco'">게시글 상세</title>
     <link rel="stylesheet" th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" th:href="@{/assets/css/post.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/comment.css}">
 </head>
 <body>
 
@@ -33,47 +34,50 @@
                 Content goes here...
             </div>
 
-            <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
-
             <!-- Comments Section -->
-            <div class="comments-section" style="margin-top: 2rem;">
-                <h4 style="margin-bottom: 1rem; color: var(--text-dark);">댓글 <span th:text="${#lists.size(comments)}" style="color: var(--primary-color);">0</span></h4>
+            <div class="comments-section">
+                <div class="comments-header">
+                    <h2 class="comments-title">댓글</h2>
+                    <span class="comments-count-badge" th:text="${#lists.size(comments)}">0</span>
+                </div>
                 
                 <!-- Comment Form -->
-                <div sec:authorize="isAuthenticated()" style="background-color: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                    <form th:action="@{/board/{id}/comment(id=${post.id})}" method="post" style="margin: 0;">
-                        <textarea name="content" rows="3" placeholder="댓글을 남겨보세요." required style="width: 100%; padding: 1rem; border: 1px solid var(--border-color); border-radius: 4px; resize: vertical; margin-bottom: 1rem; font-family: inherit;"></textarea>
-                        <div style="text-align: right;">
-                            <button type="submit" class="btn-primary-sm">등록</button>
+                <div sec:authorize="isAuthenticated()" class="comment-form-container">
+                    <form th:action="@{/board/{id}/comment(id=${post.id})}" method="post" class="comment-form">
+                        <textarea name="content" class="comment-textarea" rows="3" placeholder="댓글을 남겨보세요." required></textarea>
+                        <div class="comment-form-submit">
+                            <button type="submit" class="btn-login">등록</button>
                         </div>
                     </form>
                 </div>
-                <div sec:authorize="!isAuthenticated()" style="background-color: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; color: var(--text-muted);">
+                <div sec:authorize="!isAuthenticated()" class="comment-login-prompt">
                     댓글을 작성하려면 <a href="/login" class="text-primary-bold text-decoration-none">로그인</a>이 필요합니다.
                 </div>
 
                 <!-- Comment List -->
                 <div class="comments-list">
-                    <div th:each="comment : ${comments}" style="padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
-                        <div class="flex-between" style="margin: 0; margin-bottom: 0.5rem;">
-                            <span class="text-primary-bold">👤 [[${comment.nickname}]]</span>
-                            <span style="color: var(--text-muted); font-size: 0.875rem;">🕒 [[${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}]]</span>
+                    <div th:each="comment : ${comments}" class="comment-item">
+                        <div class="comment-top">
+                            <span class="comment-author">👤 [[${comment.nickname}]]</span>
+                            <span class="comment-date">🕒 [[${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}]]</span>
                         </div>
-                        <div style="margin-top: 0.5rem; line-height: 1.6; white-space: pre-wrap;" th:text="${comment.content}">댓글 내용</div>
+                        <div class="comment-content" th:text="${comment.content}">댓글 내용</div>
                         
-                        <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == comment.username}" style="text-align: right; margin-top: 0.75rem;">
-                            <form th:action="@{/board/{postId}/comment/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" method="post" style="margin: 0;" onsubmit="return confirm('이 댓글을 삭제하시겠습니까?');">
-                                <button type="submit" class="btn-danger-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">삭제</button>
+                        <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == comment.username}" class="comment-footer">
+                            <form th:action="@{/board/{postId}/comment/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" method="post" class="m-0" onsubmit="return confirm('이 댓글을 삭제하시겠습니까?');">
+                                <button type="submit" class="comment-delete-btn">
+                                    <span>🗑️</span> 삭제
+                                </button>
                             </form>
                         </div>
                     </div>
-                    <div th:if="${#lists.isEmpty(comments)}" style="text-align: center; color: var(--text-muted); padding: 2rem 0;">
+                    <div th:if="${#lists.isEmpty(comments)}" class="empty-comments">
                         등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
                     </div>
                 </div>
             </div>
 
-            <div style="margin-top: 2rem;">
+            <div class="back-to-list">
                 <a href="/board" class="btn-back">← 목록으로 돌아가기</a>
             </div>
         </div>
@@ -82,3 +86,4 @@
     <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>
 </html>
+

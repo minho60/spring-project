@@ -16,4 +16,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Long> {
     @Modifying
     @Query("DELETE FROM bookmark WHERE member_id = :memberId AND item_id = :itemId")
     void deleteByMemberIdAndItemId(@Param("memberId") Long memberId, @Param("itemId") Long itemId);
+
+    @Query("SELECT * FROM bookmark WHERE member_id = :memberId")
+    java.util.List<Bookmark> findByMemberId(@Param("memberId") Long memberId);
 }

@@ -5,6 +5,7 @@ import com.example.movie.domain.Review;
 import com.example.movie.repository.ItemRepository;
 import com.example.movie.repository.PostRepository;
 import com.example.movie.repository.ReviewRepository;
+import com.example.movie.service.BookmarkService;
 import com.example.movie.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ public class MemberController {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
     private final ItemRepository itemRepository;
+    private final BookmarkService bookmarkService;
 
     @GetMapping("/login")
     public String login() {
@@ -65,6 +67,11 @@ public class MemberController {
         model.addAttribute("reviews", reviews);
         model.addAttribute("itemNames", itemNames);
         model.addAttribute("posts", postRepository.findByMemberIdOrderByCreatedAtDesc(member.getId()));
+        
+        // 북마크한 아이템 추가
+        List<Long> bookmarkedIds = bookmarkService.getBookmarkedItemIds(principal.getName());
+        model.addAttribute("bookmarkedItems", itemRepository.findAllById(bookmarkedIds));
+        
         return "profile";
     }
 

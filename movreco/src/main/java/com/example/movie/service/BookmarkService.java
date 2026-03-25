@@ -7,7 +7,10 @@ import com.example.movie.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +45,17 @@ public class BookmarkService {
                 bookmarkRepository.save(bookmark);
             }
         }
+    }
+
+    public List<Long> getBookmarkedItemIds(String username) {
+        if (username == null) return Collections.emptyList();
+        Optional<Member> memberOpt = memberRepository.findByUsername(username);
+        if (memberOpt.isPresent()) {
+            return bookmarkRepository.findByMemberId(memberOpt.get().getId())
+                    .stream()
+                    .map(Bookmark::getItemId)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 }
