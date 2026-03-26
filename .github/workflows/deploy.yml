@@ -3,8 +3,7 @@ name: Deploy movreco to AWS EC2
 on:
   push:
     branches: [ "main" ]  # 현재 브랜치가 'main'이면 main으로 수정하세요!
-    paths:
-      - 'movreco/**'        # movreco 폴더가 수정될 때만 배포 실행
+
 
 jobs:
   build-and-deploy:
