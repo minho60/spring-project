@@ -43,6 +43,7 @@ jobs:
             # 새 이미지 Pull 및 실행 (80포트로 접속하면 내부 8080으로 연결)
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/movreco:latest
             docker run -d --name movreco -p 80:8080 \
+             -e "SPRING_PROFILES_ACTIVE=prod" \
               -e DB_URL="${{ secrets.TIDB_URL }}" \
               -e DB_USERNAME="${{ secrets.TIDB_USER }}" \
               -e DB_PASSWORD="${{ secrets.TIDB_PWD }}" \
