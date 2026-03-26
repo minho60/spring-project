@@ -1,0 +1,4 @@
+
+host:gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+Name:2GCvkN7R3LCmzSQ.root
+PW:oNuuVzx15yxLSRY8
