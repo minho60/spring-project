@@ -44,10 +44,11 @@ jobs:
             # 새 이미지 Pull 및 실행 (80포트로 접속하면 내부 8080으로 연결)
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/movreco:latest
             docker run -d --name movreco -p 80:8080 \
-              -e SPRING_DATASOURCE_URL='${{ secrets.TIDB_URL }}' \
-              -e SPRING_DATASOURCE_USERNAME='${{ secrets.TIDB_USER }}' \
-              -e SPRING_DATASOURCE_PASSWORD='${{ secrets.TIDB_PWD }}' \
+              -e DB_URL="${{ secrets.TIDB_URL }}" \
+              -e DB_USERNAME="${{ secrets.TIDB_USER }}" \
+              -e DB_PASSWORD="${{ secrets.TIDB_PWD }}" \
               ${{ secrets.DOCKERHUB_USERNAME }}/movreco:latest
+
             
             # 불필요한 이미지 정리
             docker image prune -f
