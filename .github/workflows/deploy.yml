@@ -44,9 +44,9 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/movreco:latest
             docker run -d --name movreco -p 80:8080 \
               -e "SPRING_PROFILES_ACTIVE=prod" \
-              -e "SPRING_DATASOURCE_URL='${{ secrets.TIDB_URL }}'" \
-              -e "SPRING_DATASOURCE_USERNAME=${{ secrets.TIDB_USER }}" \
-              -e "SPRING_DATASOURCE_PASSWORD=${{ secrets.TIDB_PWD }}" \
+              -e "SPRING_DATASOURCE_URL='${{ secrets.DB_URL }}'" \
+              -e "SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }}" \
+              -e "SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}" \
               ${{ secrets.DOCKERHUB_USERNAME }}/movreco:latest
 
             
