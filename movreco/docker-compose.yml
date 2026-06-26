@@ -1,36 +1,15 @@
 services:
-  mysql:
-    image: mysql:8.4
-    container_name: movreco-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: "1234"
-      MYSQL_DATABASE: movreco
-      TZ: Asia/Seoul
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p1234 --silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-
   app:
     build: .
     container_name: movreco-app
     restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
+    env_file:
+      - .env
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/movreco?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true
-      DB_USERNAME: root
-      DB_PASSWORD: "1234"
+      DB_URL: jdbc:mysql://${TIDB_HOST}:4000/movreco?useSSL=true&requireSSL=true&verifyServerCertificate=false&serverTimezone=UTC&connectTimeout=10000
+      DB_USERNAME: ${TIDB_USERNAME}
+      DB_PASSWORD: ${TIDB_PASSWORD}
       SPRING_SQL_INIT_MODE: never
       TZ: Asia/Seoul
     ports:
       - "8080:8080"
-
-volumes:
-  mysql_data:

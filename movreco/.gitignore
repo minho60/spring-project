@@ -38,3 +38,4 @@ out/
 
 ### Local Properties ###
 application-local.properties
+.env

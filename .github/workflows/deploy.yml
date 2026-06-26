@@ -31,7 +31,44 @@ jobs:
             git clean -fd -e 'movreco/docker-compose.yml.server-bak.*'
 
             cd /opt/movreco/movreco
-            docker compose up -d --build
+            TIDB_HOST_FROM_SECRET='${{ secrets.TIDB_HOST }}'
+            TIDB_USERNAME_FROM_SECRET='${{ secrets.TIDB_USERNAME }}'
+            TIDB_PASSWORD_FROM_SECRET='${{ secrets.TIDB_PASSWORD }}'
+
+            if [ -n "$TIDB_HOST_FROM_SECRET" ] && [ -n "$TIDB_USERNAME_FROM_SECRET" ] && [ -n "$TIDB_PASSWORD_FROM_SECRET" ]; then
+              TIDB_HOST_VALUE="$TIDB_HOST_FROM_SECRET"
+              TIDB_USERNAME_VALUE="$TIDB_USERNAME_FROM_SECRET"
+              TIDB_PASSWORD_VALUE="$TIDB_PASSWORD_FROM_SECRET"
+            elif [ -f tidb.txt ]; then
+              TIDB_HOST_VALUE="$(sed -n 's/^host:[[:space:]]*//p' tidb.txt | head -1)"
+              TIDB_USERNAME_VALUE="$(sed -n 's/^Name:[[:space:]]*//p' tidb.txt | head -1)"
+              TIDB_PASSWORD_VALUE="$(sed -n 's/^PW:[[:space:]]*//p' tidb.txt | head -1)"
+            else
+              echo "TiDB settings are missing. Add TIDB_HOST, TIDB_USERNAME, and TIDB_PASSWORD secrets."
+              exit 1
+            fi
+
+            if [ -z "$TIDB_HOST_VALUE" ] || [ -z "$TIDB_USERNAME_VALUE" ] || [ -z "$TIDB_PASSWORD_VALUE" ]; then
+              echo "TiDB settings are empty."
+              exit 1
+            fi
+
+            cat > .env <<EOF
+            TIDB_HOST=$TIDB_HOST_VALUE
+            TIDB_USERNAME=$TIDB_USERNAME_VALUE
+            TIDB_PASSWORD=$TIDB_PASSWORD_VALUE
+            EOF
+            chmod 600 .env
+
+            docker compose up -d --build --remove-orphans
             docker image prune -f
+
+            for i in $(seq 1 20); do
+              if curl -fsS http://127.0.0.1:8080 >/dev/null; then
+                break
+              fi
+              sleep 3
+            done
+            curl -fsS http://127.0.0.1:8080 >/dev/null
 
             docker ps --filter name=movreco --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
